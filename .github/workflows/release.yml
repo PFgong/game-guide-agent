@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 编译所有平台产物
+        run: python build.py
+
+      - name: 打包 dist
+        run: |
+          cd dist
+          zip -r ../game-guide-expert-all-platforms.zip .
+
+      - name: 打包 WorkBuddy 专家包
+        run: |
+          cd dist/workbuddy
+          zip -r ../../game-guide-expert-workbuddy.zip game-guide-expert
+
+      - name: 上传 Release 附件
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            game-guide-expert-all-platforms.zip
+            game-guide-expert-workbuddy.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

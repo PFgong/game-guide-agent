@@ -1,0 +1,11 @@
+# 编译产物（由 build.py 生成，不入库）
+dist/
+# 若想把产物一起分发，用 `python build.py` 后单独打包
+
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.DS_Store
+Thumbs.db
+*.log

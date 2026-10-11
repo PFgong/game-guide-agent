@@ -5,6 +5,11 @@ on:
     tags: ["v*"]
   workflow_dispatch:
 
+# 新仓库的 GITHUB_TOKEN 默认可能是只读，导致创建 Release / 上传附件被拒。
+# 显式声明写权限，避免依赖仓库设置里的 Workflow permissions。
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
